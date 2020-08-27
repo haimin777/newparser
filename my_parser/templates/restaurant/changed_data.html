@@ -1,0 +1,40 @@
+{% extends 'restaurant/base.html' %}
+
+{% block page %}
+
+    <div class="panel">
+        <div class="panel-heading bg-blue">
+            <h4 class="panel-title text-center text-white">Объекты с измененной ценой</h4>
+        </div>
+        <div class="panel-body">
+            <br/>
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr class="bg-gray text-white">
+                    <th>Адрес</th>
+                    <th>Дельта</th>
+                    <th>URL and Link</th>
+                    <th>Название</th>
+
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for change in changed_data %}
+                        <tr>
+                            <td>{{ change.avitodata.ad_place }}</td>
+                            <td>{{ change.avitodata.ad_price_delta }} </td>
+                            <td><a href="{{ change.avitodata.ad_url }}">{{ change.avitodata.ad_url }}</a></td>
+                            <td>{{ change.avitodata.ad_name }}</td>
+
+
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

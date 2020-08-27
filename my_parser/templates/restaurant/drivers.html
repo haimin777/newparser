@@ -1,0 +1,44 @@
+{% extends 'restaurant/base.html' %}
+
+{% block page %}
+
+    <div class="panel">
+        <div class="panel-heading bg-blue">
+            <h4 class="panel-title text-center text-white">Drivers</h4>
+        </div>
+        <div class="panel-body">
+            <br/>
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr class="bg-gray text-white">
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Adress</th>
+                      <th>Avatar</th>
+                      <th>Num Orders</th>
+
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for driver in drivers %}
+                        <tr>
+                            <td>{{ driver.id }}</td>
+                            <td>{{ driver.user.get_full_name }} </td>
+                            <td>{{ driver.phone }}</td>
+                            <td>{{ driver.adress }}</td>
+                            <td>{{ driver.avatar }}</td>
+                            <td>{{ driver.num_order }}</td>
+
+
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
