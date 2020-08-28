@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from my_parser import views
 
 urlpatterns = [
     path('work/', include('my_parser.urls')),
     path('admin/', admin.site.urls),
+    path("all/", views.AvitoListView.as_view()),
+
 ]

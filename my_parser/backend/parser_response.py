@@ -257,9 +257,17 @@ class ParserAvito:
                 # save new data
                 print('new data line \n')
                 ad_name = self.__get_name_ad(ad)
+                rooms, square, floor = ad_name.split(',')
+
                 ad_price = self.__get_price_ad(ad)
                 ad_place = self.__get_place_ad(ad)
-                av = AvitoData(ad_id=ad_id, ad_name=ad_name, ad_url=ad_url, ad_price=ad_price, ad_place=ad_place)
+                av = AvitoData(ad_id=ad_id,
+                               ad_name=ad_name,
+                               ad_rooms=rooms,
+                               ad_square=square,
+                               ad_url=ad_url,
+                               ad_price=ad_price,
+                               ad_place=ad_place)
                 av.save()
                 # add to database with new objects
                 av_new = AvitoNew(avitodata=av)

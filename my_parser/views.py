@@ -8,6 +8,10 @@ from rest_framework import generics
 from .models import AvitoData, AvitoPriceChange, AvitoNew
 from .serializers import AvitoSerializer
 from .forms import SettingsForm
+from django.views.generic import ListView
+
+from django_tables2 import SingleTableView
+from .tables import AvitoTable
 
 
 class AvitoList(generics.ListCreateAPIView):
@@ -40,11 +44,11 @@ def parse_data(request):
             # ...
             # redirect to a new URL:
             #return HttpResponseRedirect('/thanks/')
-            '''
+
             parser.main_with_settings(form.cleaned_data['base_url'],
                                       form.cleaned_data['p_max'],
                                       form.cleaned_data['p_min'])
-            '''
+
             #return HttpResponse("Form approved, Parsed Successfully")
             return redirect('new_ads')
 
@@ -83,6 +87,12 @@ def deltas_ads(request):
 
 def analyze_methods(request):
     return HttpResponse('List of ML and DS features')
+
+
+class AvitoListView(SingleTableView):
+    model = AvitoData
+    table_class = AvitoTable
+    template_name = 'restaurant/all_data.html'
 
 
 

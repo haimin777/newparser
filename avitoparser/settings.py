@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'my_parser',
     'rest_framework',
     'bootstrap3',
+    'django_tables2',
 
 ]
 
