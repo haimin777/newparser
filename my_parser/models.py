@@ -19,7 +19,7 @@ class AvitoData(models.Model):
 
 class AvitoPriceChange(models.Model):
 
-    avitodata = models.ForeignKey(AvitoData, on_delete=models.CASCADE)
+    avitodata = models.ForeignKey(AvitoData, on_delete=models.CASCADE, )
 
     def __str__(self):
 

@@ -11,7 +11,7 @@ from .forms import SettingsForm
 from django.views.generic import ListView
 
 from django_tables2 import SingleTableView
-from .tables import AvitoTable, AvitoChangeTable
+from .tables import AvitoTable, AvitoChangeTable, AvitoNewTable
 
 
 class AvitoList(generics.ListCreateAPIView):
@@ -102,7 +102,7 @@ class AvitoChangeListView(SingleTableView):
 
 class AvitoNewListView(SingleTableView):
     model = AvitoNew
-    table_class = AvitoChangeTable
+    table_class = AvitoNewTable
     template_name = 'restaurant/new_data.html'
 
 
