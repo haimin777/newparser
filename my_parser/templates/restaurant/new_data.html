@@ -1,4 +1,6 @@
 {% extends 'restaurant/base.html' %}
+{% load render_table from django_tables2 %}
+
 
 {% block page %}
 
@@ -9,36 +11,11 @@
         <div class="panel-body">
             <br/>
             <table class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr class="bg-gray text-white">
-                    <th>Комнаты</th>
-                    <th>Площадь</th>
-                    <th>Цена</th>
 
-                    <th>Адрес</th>
-                    <th>Дельта</th>
-                    <th>URL and Link</th>
-                    <th>Название</th>
-
-
-
-                  </tr>
-                </thead>
                 <tbody>
-                    {% for change in changed_data %}
-                        <tr>
-                            <td>{{ change.avitodata.ad_rooms }}</td>
-                            <td>{{ change.avitodata.ad_square }}</td>
-                            <td>{{ change.avitodata.ad_price }}</td>
 
-                            <td>{{ change.avitodata.ad_place }}</td>
-                            <td>{{ change.avitodata.ad_price_delta }} </td>
-                            <td><a href="{{ change.avitodata.ad_url }}">{{ change.avitodata.ad_url }}</a></td>
-                            <td>{{ change.avitodata.ad_name }}</td>
+                {% render_table table %}
 
-
-                        </tr>
-                    {% endfor %}
 
                 </tbody>
             </table>
