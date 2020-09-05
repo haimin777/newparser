@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from my_parser import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('work/', include('my_parser.urls')),
@@ -33,4 +35,4 @@ urlpatterns = [
 
     path('work/autoparse/', views.auto_parse, name='autoparse')
 
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
