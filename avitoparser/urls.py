@@ -18,8 +18,19 @@ from django.urls import path, include
 from my_parser import views
 
 urlpatterns = [
-    path('work/', include('my_parser.urls')),
+    #path('work/', include('my_parser.urls')),
     path('admin/', admin.site.urls),
-    path("all/", views.AvitoListView.as_view()),
+    #path("all/", views.AvitoListView.as_view()),
+
+    #############
+    path('', views.index, name='home'),
+    path('work/parse/', views.parse_data, name='parse_data'),
+    path('work/all/', views.AvitoListView.as_view(), name='all_list'),
+
+    path('work/new/', views.AvitoNewListView.as_view(), name='new-ads'),
+
+    path('work/deltas/', views.AvitoChangeListView.as_view(), name='deltas'),
+
+    path('work/autoparse/', views.auto_parse, name='autoparse')
 
 ]

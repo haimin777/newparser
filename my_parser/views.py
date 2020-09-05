@@ -50,7 +50,7 @@ def parse_data(request):
                                       form.cleaned_data['p_min'])
 
             #return HttpResponse("Form approved, Parsed Successfully")
-            return redirect('new_ads')
+            return redirect('new-ads')
 
     # if a GET (or any other method) we'll create a blank form
     else:

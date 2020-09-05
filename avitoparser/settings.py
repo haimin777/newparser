@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'avitoparser.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 import pymysql  # noqa: 402
 pymysql.version_info = (1, 4, 6, 'final', 0)  # change mysqlclient version
 pymysql.install_as_MySQLdb()
@@ -116,6 +116,15 @@ else:
         }
     }
 # [END db_setup]
+'''
+
+#### SQLITE database config ####
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

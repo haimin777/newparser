@@ -11,6 +11,7 @@ class AvitoData(models.Model):
     ad_url = models.URLField(verbose_name="Ссылка")
     ad_price = models.IntegerField(verbose_name="Цена")
     ad_place = models.CharField(max_length=300, verbose_name="Адрес")
+    ad_city = models.CharField(max_length=100, default='Пока ничего', verbose_name='Город/Район')
     ad_price_delta = models.IntegerField(default=0, verbose_name="Дельта")
 
     def __str__(self):

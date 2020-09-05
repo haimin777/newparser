@@ -261,13 +261,16 @@ class ParserAvito:
 
                 ad_price = self.__get_price_ad(ad)
                 ad_place = self.__get_place_ad(ad)
+                # is it Novgorod
+                ad_city = 'Район' if ad_place.startswith('д.') else 'Город'
                 av = AvitoData(ad_id=ad_id,
                                ad_name=ad_name,
                                ad_rooms=rooms,
                                ad_square=square,
                                ad_url=ad_url,
                                ad_price=ad_price,
-                               ad_place=ad_place)
+                               ad_place=ad_place,
+                               ad_city=ad_city)
                 av.save()
                 # add to database with new objects
                 av_new = AvitoNew(avitodata=av)

@@ -15,7 +15,7 @@
                         }
                     }
                 })
-            }, 150000)
+            }, 350000)
         })
     </script>
 
@@ -25,7 +25,7 @@
 {% block sidebar %}
   {% url 'parse_data' as parse_data_url %}
   {% url 'all_list' as all_list_url %}
-  {% url 'new_ads' as new_url %}
+  {% url 'new-ads' as new_url %}
   {% url 'deltas' as deltas_url %}
   {% url 'analyze' as analyze_url %}
 
@@ -34,11 +34,11 @@
       <span class="text-uppercase" style="font-size: 250%">Таблица</span>
 
         <a href="{% url 'all_list' %}"
-          class="list-group-item {% if request.path == all_list_url %} active {% endif %} " style="font-size: 250%">Показать все</a>
+          class="list-group-item active" style="font-size: 250%">Показать все</a>
 
 
 
-      <span class="text-uppercase">Analyze</span>
+      {# <span class="text-uppercase">Результаты</span> #}
 
         <a href="{% url 'deltas' %}"
           class="list-group-item {% if request.path == deltas_url %} active {% endif %} " style="font-size: 250%">Показать Дельту</a>
@@ -46,7 +46,7 @@
 
         <a href="{% url 'parse_data' %}"
               class="list-group-item {% if request.path == parse_data_url %} active {% endif %} " style="font-size: 250%">Начать Парсинг</a>
-        <a href="{% url 'new_ads' %}"
+        <a href="{% url 'new-ads' %}"
           class="list-group-item {% if request.path == new_ads_url %} active {% endif %} " style="font-size: 250%">Новые</a>
     </div>
 

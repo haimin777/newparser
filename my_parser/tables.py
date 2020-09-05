@@ -6,7 +6,14 @@ class AvitoTable(tables.Table):
     class Meta:
         model = AvitoData
         template_name = "django_tables2/bootstrap.html"
-        fields = ("ad_rooms", "ad_square", "ad_price", "ad_url", "ad_place",  "ad_price_delta",  "ad_name")
+        fields = ("ad_rooms",
+                  "ad_square",
+                  "ad_place",
+                  "ad_city",
+                  "ad_price",
+                  "ad_url",
+                  "ad_price_delta",
+                  "ad_name")
 
 
 class AvitoChangeTable(tables.Table):
@@ -17,7 +24,7 @@ class AvitoChangeTable(tables.Table):
                   "avitodata__ad_square",
                   "avitodata__ad_price",
                   "avitodata__ad_price_delta",
-
+                   "avitodata__ad_city",
                   "avitodata__ad_url",
                   "avitodata__ad_place",
                   "avitodata__ad_name")
@@ -31,6 +38,7 @@ class AvitoNewTable(tables.Table):
                   "avitodata__ad_square",
                   "avitodata__ad_price",
                   "avitodata__ad_price_delta",
+                  "avitodata__ad_city",
 
                   "avitodata__ad_url",
                   "avitodata__ad_place",

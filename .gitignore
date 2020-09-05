@@ -36,3 +36,4 @@ $RECYCLE.BIN/
 
 #other files
 avito.csv
+*.sqlite3
