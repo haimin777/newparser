@@ -307,7 +307,6 @@ class ParserAvito:
                     bot_message = 'Изменение цены [' + av.ad_place +']'+'(' + av.ad_url + ')'
 
                     send_bot_notification(bot_chat_id, bot_message)
-                    print(bot_message, '\n')
 
 
     def parse_detail_data(self):
