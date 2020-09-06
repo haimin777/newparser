@@ -249,7 +249,7 @@ class ParserAvito:
 
         ads = self.__get_ads()
 
-        bot_chat_id = 790562843
+        bot_chat_id = 275749097 #790562843
 
         for ad in ads:
 
