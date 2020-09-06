@@ -19,6 +19,9 @@ class AvitoList(generics.ListCreateAPIView):
     serializer_class = AvitoSerializer
 
 
+
+
+
 def index(request):
 
     return render(request, 'restaurant/base.html', {})

@@ -4,9 +4,16 @@ import locale
 from bs4 import BeautifulSoup as bs
 from .exeptions import FailedGettingNumberPages, FailedAdsDataGet, FailedItemsGetting
 import pymorphy2
-
+import requests
 
 from ..models import AvitoData, AvitoPriceChange, AvitoNew
+
+
+def send_bot_notification(bot_chatID, bot_message):
+    bot_token = '1187651461:AAHqdGs2A5nhNsGF5I2F0F7keHaz73qF_VA'
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) + '&parse_mode=Markdown&text=' + bot_message
+
+    response = requests.get(send_text)
 
 class ParserAvito:
 
@@ -242,12 +249,13 @@ class ParserAvito:
 
         ads = self.__get_ads()
 
+        bot_chat_id = 790562843
+
         for ad in ads:
 
             # get ad id from url
             ad_url = self.__get_url_ad(ad)
 
-            #print(ad_url)
             ad_id = int(ad_url.split('._')[1])
 
             # check if add is new
@@ -276,14 +284,13 @@ class ParserAvito:
                 av_new = AvitoNew(avitodata=av)
                 av_new.save()
 
+                # send notification about new
+                bot_message = 'Новый объект [' + av.ad_place + ']' + '(' + av.ad_url + ')'
 
-
-
+                send_bot_notification(bot_chat_id, bot_message)
             else:
 
                 ad_price = self.__get_price_ad(ad)
-                #print('existing data', ad_price, ad_id, '\n')
-
 
                 # check price change
                 if res[0].ad_price != ad_price:
@@ -295,6 +302,13 @@ class ParserAvito:
                     av.save()
                     av_change = AvitoPriceChange(avitodata=av)
                     av_change.save()
+
+                    # send bot notification for chanded price
+                    bot_message = 'Изменение цены [' + av.ad_place +']'+'(' + av.ad_url + ')'
+
+                    send_bot_notification(bot_chat_id, bot_message)
+                    print(bot_message, '\n')
+
 
     def parse_detail_data(self):
         """
