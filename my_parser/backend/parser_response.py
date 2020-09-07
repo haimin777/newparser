@@ -249,7 +249,7 @@ class ParserAvito:
 
         ads = self.__get_ads()
 
-        bot_chat_id = 790562843 #275749097
+        bot_chat_id = 790562843 # 275749097 #
 
         for ad in ads:
 
@@ -304,7 +304,7 @@ class ParserAvito:
                     av_change.save()
 
                     # send bot notification for chanded price
-                    bot_message = 'Изменение цены [' + av.ad_place +']'+'(' + av.ad_url + ')'
+                    bot_message = 'Изменение цены: ' + str(av.ad_price_delta) + ' [' + av.ad_place +']'+'(' + av.ad_url + ')'
 
                     send_bot_notification(bot_chat_id, bot_message)
 
