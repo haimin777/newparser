@@ -1,5 +1,5 @@
 import time
-
+import datetime
 import os
 
 from .exeptions import FailedItemsGetting, FailedGetRequest
@@ -96,7 +96,8 @@ def main():
     parser_avito.html = html_data
 
     total_pages = parser_avito.count_page
-    print('total pages: ', total_pages, '\n'*3)
+
+    print('total pages: ', total_pages, '\n', datetime.datetime.now(), '\n'*3)
     #get_main_ads_data(req_avito, total_pages, url_obj, parser_avito)
     get_main_ads_data(req_avito, total_pages, url_obj, parser_avito)
 
@@ -130,7 +131,7 @@ def main_with_settings(base_url, p_max, p_min):
     parser_avito.html = html_data
 
     total_pages = parser_avito.count_page
-    print('total pages: ', total_pages, '\n'*3)
+    print('total pages: ', total_pages,'\n',datetime.datetime.now() , '\n'*3)
     #get_main_ads_data(req_avito, total_pages, url_obj, parser_avito)
     get_main_ads_data(req_avito, total_pages, url_obj, parser_avito)
 
