@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('work/deltas/', views.AvitoChangeListView.as_view(), name='deltas'),
 
-    path('work/autoparse/', views.auto_parse, name='autoparse')
+    path('work/autoparse/', views.auto_parse, name='autoparse'),
+    path('work/settings/', views.show_settings, name='showsettings'),
 
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
