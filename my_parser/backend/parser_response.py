@@ -56,7 +56,8 @@ class ParserAvito:
         :return: None
         """
 
-        ads = self.__soup.find('div', class_='js-catalog_serp')
+        ads = self.__soup.find('div', class_='js-single-page single-page')  #'js-catalog_serp')
+
         ads = ads.find_all('div', class_='item_table')
 
         if not ads:
