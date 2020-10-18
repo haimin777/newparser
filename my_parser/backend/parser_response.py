@@ -247,67 +247,72 @@ class ParserAvito:
         In the first cycle we get main data from an ad(Name of ad, url, price, date, place, metro)
         :return: None
         """
+        try:
+            ads = self.__get_ads()
 
-        ads = self.__get_ads()
+        ### 790562843 - klimov
+        ### 275749097 -haimin
 
-        bot_chat_id = 790562843 # 275749097 #
+            bot_chat_id = 790562843 #275749097 # #  #
 
-        for ad in ads:
+            for ad in ads:
+                # get ad id from url
+                ad_url = self.__get_url_ad(ad)
+                #print(ad_url, '\n'*3)
 
-            # get ad id from url
-            ad_url = self.__get_url_ad(ad)
+                ad_id = int(ad_url.split('._')[1])
 
-            ad_id = int(ad_url.split('._')[1])
+                # check if add is new
+                res = AvitoData.objects.filter(ad_id=ad_id)
 
-            # check if add is new
-            res = AvitoData.objects.filter(ad_id=ad_id)
+                if len(res) == 0:
+                    # save new data
+                    print('new data line \n')
+                    ad_name = self.__get_name_ad(ad)
+                    rooms, square, floor = ad_name.split(',')
 
-            if len(res) == 0:
-                # save new data
-                print('new data line \n')
-                ad_name = self.__get_name_ad(ad)
-                rooms, square, floor = ad_name.split(',')
-
-                ad_price = self.__get_price_ad(ad)
-                ad_place = self.__get_place_ad(ad)
-                # is it Novgorod
-                ad_city = 'Район' if ad_place.startswith('д.') else 'Город'
-                av = AvitoData(ad_id=ad_id,
-                               ad_name=ad_name,
-                               ad_rooms=rooms,
-                               ad_square=square,
-                               ad_url=ad_url,
-                               ad_price=ad_price,
-                               ad_place=ad_place,
-                               ad_city=ad_city)
-                av.save()
-                # add to database with new objects
-                av_new = AvitoNew(avitodata=av)
-                av_new.save()
-
-                # send notification about new
-                bot_message = 'Новый объект [' + av.ad_place + ']' + '(' + av.ad_url + ')'
-
-                send_bot_notification(bot_chat_id, bot_message)
-            else:
-
-                ad_price = self.__get_price_ad(ad)
-
-                # check price change
-                if res[0].ad_price != ad_price:
-                    print('price changed!!! old: {} new: {}\n'.format(res[0].ad_price, ad_price))
-                    # retrieve object by pk
-                    av = AvitoData.objects.get(pk=res[0].pk)
-                    av.ad_price_delta = ad_price - res[0].ad_price
-                    av.ad_price = ad_price
+                    ad_price = self.__get_price_ad(ad)
+                    ad_place = self.__get_place_ad(ad)
+                    # is it Novgorod
+                    ad_city = 'Район' if ad_place.startswith('д.') else 'Город'
+                    av = AvitoData(ad_id=ad_id,
+                                   ad_name=ad_name,
+                                   ad_rooms=rooms,
+                                   ad_square=square,
+                                   ad_url=ad_url,
+                                   ad_price=ad_price,
+                                   ad_place=ad_place,
+                                   ad_city=ad_city)
                     av.save()
-                    av_change = AvitoPriceChange(avitodata=av)
-                    av_change.save()
+                    # add to database with new objects
+                    av_new = AvitoNew(avitodata=av)
+                    av_new.save()
 
-                    # send bot notification for chanded price
-                    bot_message = 'Изменение цены: ' + str(av.ad_price_delta) + ' [' + av.ad_place +']'+'(' + av.ad_url + ')'
+                    # send notification about new
+                    bot_message = 'Новый объект [' + av.ad_place + ']' + '(' + av.ad_url + ')'
 
                     send_bot_notification(bot_chat_id, bot_message)
+                else:
+
+                    ad_price = self.__get_price_ad(ad)
+
+                    # check price change
+                    if res[0].ad_price != ad_price:
+                        print('price changed!!! old: {} new: {}\n'.format(res[0].ad_price, ad_price))
+                        # retrieve object by pk
+                        av = AvitoData.objects.get(pk=res[0].pk)
+                        av.ad_price_delta = ad_price - res[0].ad_price
+                        av.ad_price = ad_price
+                        av.save()
+                        av_change = AvitoPriceChange(avitodata=av)
+                        av_change.save()
+
+                        # send bot notification for chanded price
+                        bot_message = 'Изменение цены: ' + str(av.ad_price_delta) + ' [' + av.ad_place +']'+'(' + av.ad_url + ')'
+
+                        send_bot_notification(bot_chat_id, bot_message)
+        except Exception as e:
+            print(e)
 
 
     def parse_detail_data(self):
