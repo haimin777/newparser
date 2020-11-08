@@ -70,9 +70,11 @@ def parse_data(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = SettingsForm(initial={'base_url': 'https://www.avito.ru/velikiy_novgorod/kvartiry/prodam-ASgBAgICAUSSA8YQ?',
-                                     'p_max': 1200000,
-                                     'p_min': 800000})
+        cur_settings = MainSettings()
+
+        form = SettingsForm(initial={'base_url': cur_settings.base_url,
+                                     'p_max': cur_settings.max_summ,
+                                     'p_min': cur_settings.min_summ})
 
     return render(request, 'restaurant/parse_settings.html', {'form': form})
 
