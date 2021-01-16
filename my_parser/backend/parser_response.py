@@ -9,6 +9,8 @@ import requests
 from ..models import AvitoData, AvitoPriceChange, AvitoNew
 
 
+
+
 def send_bot_notification(bot_chatID, bot_message):
     bot_token = '1187651461:AAHqdGs2A5nhNsGF5I2F0F7keHaz73qF_VA'
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) + '&parse_mode=Markdown&text=' + bot_message
@@ -21,7 +23,7 @@ class ParserAvito:
 
         self.__soup = None
         self.result_data = PageData()
-        self.__number_page = 0
+        self.__number_page = 1
 
     @property
     def count_page(self):
@@ -56,9 +58,9 @@ class ParserAvito:
         :return: None
         """
 
-        ads = self.__soup.find('div', class_='js-single-page single-page')  #'js-catalog_serp')
+        ads = self.__soup.find_all('div', class_='iva-item-root-G3n7v')  #'js-catalog_serp')
 
-        ads = ads.find_all('div', class_='item_table')
+        #ads = ads.find_all('div', class_='item_table')
 
         if not ads:
             raise FailedAdsDataGet(self.__number_page)
@@ -73,10 +75,10 @@ class ParserAvito:
         """
 
         title = ''
-        title_tag = ad.find('div', class_='description').find('h3')
+        title_tag = ad.find('span', class_="title-root-395AQ").text
 
         if title_tag:
-            title = title_tag.text.strip()
+            title = title_tag #title_tag.text.strip()
 
         return title
 
@@ -90,7 +92,7 @@ class ParserAvito:
         url = ''
         url_base = 'https://www.avito.ru{}'
 
-        url_tag = ad.find('div', class_='description').find('h3').find('a')
+        url_tag = ad.find('div', class_='iva-item-titleStep-2bjuh').find('a')
 
         if url_tag:
             url_patt = url_tag.get('href')
@@ -107,7 +109,7 @@ class ParserAvito:
         price = '1111'
 
         #price_tag = ad.find('div', class_='about')
-        price_tag = ad.find('span', class_="snippet-price")
+        price_tag = ad.find('span', class_="price-text-1HrJ_")#"snippet-price")
 
 
         if price_tag:
@@ -116,7 +118,7 @@ class ParserAvito:
         price = price.replace(' ', '')
         return int(price[:-1])
 
-    def __get_date_ad(self, ad):
+    def __get_date_ad(self, ad): # :TODO now data in hours create convertor !!!!
         """
         Get date of the ad
         :param ad: tag of the ad
@@ -139,7 +141,7 @@ class ParserAvito:
         """
 
         place = ''
-        place_tag = ad.find('span', class_='item-address__string')
+        place_tag = ad.find('span', class_='geo-address-9QndR')
 
         if place_tag:
             place = place_tag.text.strip()
@@ -152,7 +154,7 @@ class ParserAvito:
         :return: description
         """
         description = ''
-        description_tag = self.__soup.find('div', class_='item-description-text')
+        description_tag = self.__soup.find('span', class_="title-root-395AQ").text #'div', class_='item-description-text')
 
         if description_tag:
             description = description_tag.text.strip()
@@ -180,7 +182,7 @@ class ParserAvito:
         :return: items tag
         """
 
-        items_tag = self.__soup.find_all('li', class_='item-params-list-item')
+        items_tag = self.__soup.find_all('div', class_='iva-item-root-G3n7v') #'item-params-list-item')
 
         if items_tag:
             return items_tag
@@ -234,7 +236,7 @@ class ParserAvito:
                 'Наименование объявления': self.__get_name_ad(ad),
                 'Url': self.__get_url_ad(ad),
                 'Цена': self.__get_price_ad(ad),
-                'Дата': self.__get_date_ad(ad),
+                #'Дата': self.__get_date_ad(ad),
                 'Месторасположение': self.__get_place_ad(ad)
             }
 
@@ -249,11 +251,12 @@ class ParserAvito:
         """
         try:
             ads = self.__get_ads()
+            #print(len(ads))
 
         ### 790562843 - klimov
         ### 275749097 -haimin
 
-            bot_chat_id = 790562843 #275749097 # #  #
+            bot_chat_id = 275749097
 
             for ad in ads:
                 # get ad id from url
@@ -262,6 +265,7 @@ class ParserAvito:
 
                 ad_id = int(ad_url.split('._')[1])
 
+
                 # check if add is new
                 res = AvitoData.objects.filter(ad_id=ad_id)
 
@@ -269,10 +273,17 @@ class ParserAvito:
                     # save new data
                     print('new data line \n')
                     ad_name = self.__get_name_ad(ad)
-                    rooms, square, floor = ad_name.split(',')
+
+                    #rooms, square, floor = ad_name.split(',')
+
+                    info = ad_name.split(' ')
+                    rooms, square, floor = info[0], info[2], info[4]
 
                     ad_price = self.__get_price_ad(ad)
+
                     ad_place = self.__get_place_ad(ad)
+
+                    
                     # is it Novgorod
                     ad_city = 'Район' if ad_place.startswith('д.') else 'Город'
                     av = AvitoData(ad_id=ad_id,
@@ -283,6 +294,8 @@ class ParserAvito:
                                    ad_price=ad_price,
                                    ad_place=ad_place,
                                    ad_city=ad_city)
+
+                    
                     av.save()
                     # add to database with new objects
                     av_new = AvitoNew(avitodata=av)
@@ -292,6 +305,7 @@ class ParserAvito:
                     bot_message = 'Новый объект [' + av.ad_place + ']' + '(' + av.ad_url + ')'
 
                     send_bot_notification(bot_chat_id, bot_message)
+
                 else:
 
                     ad_price = self.__get_price_ad(ad)
@@ -311,8 +325,9 @@ class ParserAvito:
                         bot_message = 'Изменение цены: ' + str(av.ad_price_delta) + ' [' + av.ad_place +']'+'(' + av.ad_url + ')'
 
                         send_bot_notification(bot_chat_id, bot_message)
+
         except Exception as e:
-            print(e)
+            print(e, 'Exception from parse_data_for_db')
 
 
     def parse_detail_data(self):
