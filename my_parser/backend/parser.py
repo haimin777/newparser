@@ -1,6 +1,7 @@
 import time
 import datetime
 import os
+import random
 
 from .exeptions import FailedItemsGetting, FailedGetRequest
 from .parser_response import ParserAvito
@@ -71,8 +72,14 @@ def get_main_ads_data(request_avito, total_pages, url, parser_avito):
         print(i, url.url, sep=' ')
         html_data = send_get_request(request_avito, url.url)
 
+        #with open('/home/haimin/PycharmProjects/Selenium/avito_page.html') as f:
+            #html_data = f.read()
+
         parser_avito.html = html_data
         parser_avito.parse_data_for_db()
+        sleep_time = random.randint(20, 100)
+        print('Sleep time OFF debug: ', sleep_time)
+        time.sleep(sleep_time)
 
 
 
@@ -121,7 +128,7 @@ def main_with_settings(base_url, p_max, p_min):
 
     req_avito = RequestHandler()
 
-    print(url_obj.url)
+    #print(url_obj.url)
     #print(req_avito, '\n'*3)
 
     html_data = send_get_request(req_avito, url_obj.url)
