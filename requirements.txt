@@ -8,3 +8,4 @@ requests
 configobj
 lxml
 django-tables2
+cfscrape==2.1.1

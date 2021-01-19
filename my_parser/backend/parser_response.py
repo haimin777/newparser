@@ -256,7 +256,7 @@ class ParserAvito:
         ### 790562843 - klimov
         ### 275749097 -haimin
 
-            bot_chat_id = 275749097
+            bot_chat_id = 790562843
 
             for ad in ads:
                 # get ad id from url
