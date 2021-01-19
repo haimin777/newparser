@@ -328,7 +328,8 @@ class ParserAvito:
 
         except Exception as e:
             print(e, 'Exception from parse_data_for_db')
-
+            # send alarm message
+            send_bot_notification(275749097, 'Somthing wrong with AvitoBot')
 
     def parse_detail_data(self):
         """
